@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Registration } from './page/Auth/Registration'
 import { Login } from './page/Auth/Login'
 import { Tasks } from './page/Tasks'
+import { useEffect } from 'react'
+import { hideConsoleLog } from './shared/utils'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -16,6 +18,11 @@ const router = createBrowserRouter([
     element: <Login />,
   },
 ])
+
+useEffect(() => {
+  hideConsoleLog()
+}, [])
+
 function App() {
   return <RouterProvider router={router} />
 }
