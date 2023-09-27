@@ -28,6 +28,7 @@ interface TaskProps {
 export const CreateTask = ({ setItems }: TaskProps) => {
   const [charNum, setCharNum] = useState(0)
   const [isLimit, setIsLimit] = useState(false)
+  const [buttonDisabled, setButtonDisabled] = useState(false)
   const [minLimitHead, setMinLimitHead] = useState(false)
   const [minLimitDesc, setMinLimitDesc] = useState(false)
   const dispatch = useDispatch()
@@ -66,6 +67,7 @@ export const CreateTask = ({ setItems }: TaskProps) => {
   }
 
   const sendForm = (data: Inputs) => {
+    setButtonDisabled(true)
     if (headLine.trim().length > 0 && description.trim().length > 0) {
       return new Promise(async (res, rej) => {
         const form = new FormData()
@@ -86,6 +88,7 @@ export const CreateTask = ({ setItems }: TaskProps) => {
             } else if (response.status === 203) {
               navigate('/login')
             }
+            setButtonDisabled(false)
           })
           .catch((error) => {
             if (error.response.status === 401) {
@@ -95,6 +98,7 @@ export const CreateTask = ({ setItems }: TaskProps) => {
       })
     }
   }
+  console.log(buttonDisabled)
 
   useEffect(() => {
     setCharNum(description?.length)
@@ -204,6 +208,7 @@ export const CreateTask = ({ setItems }: TaskProps) => {
                   backgroundColor={colors.primary}
                   innerText="Create"
                   width="100%"
+                  disable={buttonDisabled}
                 />
                 <ButtonPrimary
                   backgroundColor={colors.white}

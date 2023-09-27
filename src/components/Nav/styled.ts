@@ -28,7 +28,7 @@ export const NavigationBar = styled.nav`
   }
 
   @media ${device.mobileL} {
-    padding: 4px 12px;
+    padding: 16px;
   }
 
   & > .profile > div {
@@ -61,6 +61,10 @@ export const NavigationBar = styled.nav`
     background-color: ${colors.primary};
     border-radius: 50%;
     padding: 5px 10px;
+
+    @media (max-width: 500px) {
+      padding: 4px 8px;
+    }
   }
 
   & > .profile > div > .profilePic > p {

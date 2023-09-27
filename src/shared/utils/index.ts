@@ -27,6 +27,16 @@ export const hideConsoleLog = () => {
   }
 }
 
+export const notifyUser = () => {
+  Notification.requestPermission().then((perm) => {
+    if (perm === 'granted') {
+      new Notification('Example', {
+        body: 'Clicked',
+      })
+    }
+  })
+}
+
 const size = {
   mobileS: '320px',
   mobileM: '375px',

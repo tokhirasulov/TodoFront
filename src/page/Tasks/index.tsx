@@ -7,7 +7,7 @@ import { colors } from '../../shared/colors'
 import { CreateTask } from '../../components/CreateTaskModal'
 import { EmptyPage } from '../../widgets/EmptyPage'
 import { Nav } from '../../components/Nav/navigation'
-import { config } from '../../shared/utils'
+import { config, notifyUser } from '../../shared/utils'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { Header } from '../../components/Header'
 import { Dashboard } from '../../components/Dashboard'
@@ -19,6 +19,7 @@ import deleteIcon from '../../shared/assets/deleteBigger.svg'
 import logoutIcon from '../../shared/assets/logoutIcon.svg'
 import warningIcon from '../../shared/assets/warning.svg'
 import PopUp from '../../components/PopUp'
+import { NotificationPop } from '../../components/NotificationPop'
 
 export interface Item {
   _id: string
@@ -32,6 +33,7 @@ export const Tasks = () => {
   const [items, setItems] = useState<Item[]>([])
   const [isEmpty, setIsEmpty] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [showNotification, setShowNotification] = useState(false)
   const dispatch = useDispatch()
   const modalShow = useSelector(({ taskPopUp }) => taskPopUp.isShown)
   const showUpdate = useSelector(({ updatePopUp }) => updatePopUp.updateTask)
@@ -124,6 +126,7 @@ export const Tasks = () => {
     } catch (error) {
       console.log(error)
     }
+    setShowNotification(true)
   }, [])
 
   useEffect(() => {
@@ -169,6 +172,10 @@ export const Tasks = () => {
       ) : (
         <>
           <Nav />
+          {/* <NotificationPop
+            showNotification={showNotification}
+            setShowNotification={setShowNotification}
+          /> */}
           <Style.Wrapper>
             <CreateTask setItems={setItems} />
             <UpdateTask />
