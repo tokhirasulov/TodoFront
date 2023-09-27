@@ -1,4 +1,4 @@
-import empty_illus from '../../shared/assets/Illustration.svg'
+import empty_illus from '../../shared/assets/Illustration.png'
 import { colors } from '../../shared/colors'
 import { ButtonPrimary } from '../../components/ButtonPrimary'
 import * as Style from './styled'

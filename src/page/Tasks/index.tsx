@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { SetStateAction, useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import * as Style from './styled'
 import { useNavigate } from 'react-router-dom'
 import { ButtonPrimary } from '../../components/ButtonPrimary'
