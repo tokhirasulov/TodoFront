@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { colors } from '../../shared/colors'
 import { useEffect, useState, useMemo } from 'react'
 import { DatePicker, Space, DatePickerProps } from 'antd'
+import { RangePickerProps } from 'antd/es/date-picker'
 import axios from 'axios'
 import { hideUpdateTask } from '../../store/features/updateTaskModal/updateTaskSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -121,6 +122,10 @@ export const UpdateTask = () => {
     headLineSet: setMinLimitHead,
     descSet: setMinLimitDesc,
   })
+  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+    // Can not select days before today
+    return current < dayjs()
+  }
 
   return (
     <>
@@ -193,6 +198,7 @@ export const UpdateTask = () => {
                       onChange={onChange}
                       className="create-input"
                       defaultValue={dateValue}
+                      disabledDate={disabledDate}
                     />
                   )}
                 </Space>

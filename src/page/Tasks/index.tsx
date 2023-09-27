@@ -19,7 +19,6 @@ import deleteIcon from '../../shared/assets/deleteBigger.svg'
 import logoutIcon from '../../shared/assets/logoutIcon.svg'
 import warningIcon from '../../shared/assets/warning.svg'
 import PopUp from '../../components/PopUp'
-import { response } from 'express'
 
 export interface Item {
   _id: string
@@ -32,6 +31,7 @@ export interface Item {
 export const Tasks = () => {
   const [items, setItems] = useState<Item[]>([])
   const [isEmpty, setIsEmpty] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
   const modalShow = useSelector(({ taskPopUp }) => taskPopUp.isShown)
   const showUpdate = useSelector(({ updatePopUp }) => updatePopUp.updateTask)
@@ -79,13 +79,13 @@ export const Tasks = () => {
     }
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const getData = async () => {
       try {
         axios
           .request(config('GET', 'tasks'))
           .then((response) => {
-            console.log(response)
+            setIsLoading(true)
             if (response.status === 203) {
               navigate('/login')
             } else if (response.status === 200) {
@@ -97,6 +97,7 @@ export const Tasks = () => {
               navigate('/login')
             }
           })
+        setIsLoading(false)
       } catch (error) {
         console.log(error)
       }
@@ -116,6 +117,8 @@ export const Tasks = () => {
     dispatch(showCreate())
   }
 
+  console.log(isLoading)
+
   const backlog = items.filter((item: Item) => item.status === 'backlog')
   const in_progress = items.filter(
     (item: Item) => item.status === 'in_progress'
@@ -124,92 +127,116 @@ export const Tasks = () => {
 
   return (
     <>
-      <Nav />
-      <Style.Wrapper>
-        <CreateTask setItems={setItems} />
-        <UpdateTask />
-        {deletePop && (
-          <PopUp
-            modal_icon={deleteIcon}
-            buttonText="Delete"
-            title="Delete Task"
-            status="Delete"
-            message="Are you sure you want to delete this task? This action can not be
+      {!isLoading ? (
+        <div className="circlesWrapper">
+          <div className="circles">
+            <div className="circle1"></div>
+            <div className="circle2"></div>
+            <div className="circle3"></div>
+            <div className="circle4"></div>
+            <div className="circle5"></div>
+            <div className="circle6"></div>
+            <div className="circle7"></div>
+            <div className="circle8"></div>
+            <div className="circle9"></div>
+            <div className="circle10"></div>
+            <div className="circle11"></div>
+            <div className="circle12"></div>
+            <div className="circle13"></div>
+            <div className="circle14"></div>
+            <div className="circle15"></div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Nav />
+          <Style.Wrapper>
+            <CreateTask setItems={setItems} />
+            <UpdateTask />
+            {deletePop && (
+              <PopUp
+                modal_icon={deleteIcon}
+                buttonText="Delete"
+                title="Delete Task"
+                status="Delete"
+                message="Are you sure you want to delete this task? This action can not be
           undone."
-            color="#EF4444"
-            bgColor="#fee2e2"
-          />
-        )}
+                color="#EF4444"
+                bgColor="#fee2e2"
+              />
+            )}
 
-        {editPop && (
-          <PopUp
-            modal_icon={warningIcon}
-            buttonText="Edit"
-            title="Edit Task"
-            status="Edit"
-            message="Are you sure you want to delete this task? This action can not be
+            {editPop && (
+              <PopUp
+                modal_icon={warningIcon}
+                buttonText="Edit"
+                title="Edit Task"
+                status="Edit"
+                message="Are you sure you want to delete this task? This action can not be
           undone."
-            color="#F59E0B"
-            bgColor="#FDF0C8"
-          />
-        )}
-        {logoutPop && (
-          <PopUp
-            modal_icon={logoutIcon}
-            buttonText="Log out"
-            title="Log out"
-            message="Are you sure you want to delete this task? This action can not be
+                color="#F59E0B"
+                bgColor="#FDF0C8"
+              />
+            )}
+            {logoutPop && (
+              <PopUp
+                modal_icon={logoutIcon}
+                buttonText="Log out"
+                title="Log out"
+                message="Are you sure you want to delete this task? This action can not be
           undone."
-            color={colors.primary}
-            bgColor="#F1F5F9"
-          />
-        )}
-        {isEmpty ? (
-          <EmptyPage handleClick={handleClick} />
-        ) : (
-          <Style.TaskWrapper
-            className={
-              modalShow || deletePop || editPop || logoutPop || showUpdate
-                ? 'blur'
-                : ''
-            }
-          >
-            <Style.MainContent>
-              <Header handleClick={handleClick} />
-              <Style.Progress>
-                <DragDropContext onDragEnd={handleDragEnd}>
-                  <div className="first-column">
-                    <Dashboard
-                      status={backlog}
-                      title="Backlog"
-                      dropId="backlog"
-                    />
-                    <div className="buttonWrapper">
-                      <ButtonPrimary
-                        backgroundColor={colors.white}
-                        innerText="+ Add new task"
-                        style={{ border: `1px dashed ${colors.primary}` }}
-                        width="100%"
-                        onClick={handleClick}
+                color={colors.primary}
+                bgColor="#F1F5F9"
+              />
+            )}
+            {isEmpty ? (
+              <EmptyPage handleClick={handleClick} />
+            ) : (
+              <Style.TaskWrapper
+                className={
+                  modalShow || deletePop || editPop || logoutPop || showUpdate
+                    ? 'blur'
+                    : ''
+                }
+              >
+                <Style.MainContent>
+                  <Header handleClick={handleClick} />
+                  <Style.Progress>
+                    <DragDropContext onDragEnd={handleDragEnd}>
+                      <div className="first-column">
+                        <Dashboard
+                          status={backlog}
+                          title="Backlog"
+                          dropId="backlog"
+                        />
+                        <div className="buttonWrapper">
+                          <ButtonPrimary
+                            backgroundColor={colors.white}
+                            innerText="+ Add new task"
+                            style={{ border: `1px dashed ${colors.primary}` }}
+                            width="100%"
+                            onClick={handleClick}
+                          />
+                        </div>
+                      </div>
+                      <Dashboard
+                        status={in_progress}
+                        title="In Progress"
+                        dropId="in_progress"
                       />
-                    </div>
-                  </div>
-                  <Dashboard
-                    status={in_progress}
-                    title="In Progress"
-                    dropId="in_progress"
-                  />
-                  <Dashboard
-                    status={completed}
-                    title="Completed"
-                    dropId="completed"
-                  />
-                </DragDropContext>
-              </Style.Progress>
-            </Style.MainContent>
-          </Style.TaskWrapper>
-        )}
-      </Style.Wrapper>
+                      <Dashboard
+                        status={completed}
+                        title="Completed"
+                        dropId="completed"
+                      />
+                    </DragDropContext>
+                  </Style.Progress>
+                </Style.MainContent>
+              </Style.TaskWrapper>
+            )}
+          </Style.Wrapper>
+        </>
+      )}
     </>
   )
 }

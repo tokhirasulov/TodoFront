@@ -117,8 +117,8 @@ export const CreateTask = ({ setItems }: TaskProps) => {
   })
 
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    // Can not select days before today and today
-    return current && current < dayjs().endOf('day')
+    // Can not select days before today
+    return current < dayjs()
   }
 
   return (

@@ -46,9 +46,11 @@ export const Login = () => {
   useEffect(() => {
     setIsUserExist(true)
   }, [email])
+
   useEffect(() => {
     setIsPasswordExist(true)
   }, [password])
+
   const sendForm = (data: any) => {
     const form = {
       email: data.email,

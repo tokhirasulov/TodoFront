@@ -126,6 +126,7 @@ export const Task = styled.div`
     align-items: center;
     font-size: 18px;
     position: relative;
+    gap: 10px;
     @media ${device.tablet} {
       font-size: 14px;
     }
