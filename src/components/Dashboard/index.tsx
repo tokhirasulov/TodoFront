@@ -17,11 +17,6 @@ export const Dashboard = ({ status, title, dropId }: IProps) => {
   const notDraggable = true
   const [showInfoPop, setShowInfoPop] = useState(false)
 
-  const handleHover = (e: any) => {
-    setShowInfoPop(!showInfoPop)
-    console.log(e.target)
-  }
-
   return (
     <Style.StatusSection>
       <Style.Status>

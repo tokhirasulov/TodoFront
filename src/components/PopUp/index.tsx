@@ -1,4 +1,3 @@
-import { useState, useMemo } from 'react'
 import * as Style from './styled'
 import { ButtonPrimary } from '../ButtonPrimary'
 import { colors } from '../../shared/colors'

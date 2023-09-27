@@ -7,7 +7,6 @@ import { ErrorMessage } from '../../../components/ErrorMessage'
 import showEye from '../../../shared/assets/password-show.svg'
 import hideEye from '../../../shared/assets/password-hide.svg'
 import { colors } from '../../../shared/colors'
-import { configs } from '../../../configs'
 import { config } from '../../../shared/utils/index'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -25,11 +24,9 @@ export const Registration = () => {
   const [confirmShow, setconfirmShow] = useState(false)
   const [isUserExist, setIsUserExist] = useState(false)
   const [minFullName, setMinFullName] = useState(false)
-  const emailRef = useRef(null)
   const navigate = useNavigate()
   const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
-  const NAME_REGEX = /^[a-z ,.'-]+$/i
   const {
     register,
     handleSubmit,

@@ -12,7 +12,7 @@ import { config } from '../../../shared/utils'
 import mainImage from '../../../shared/assets/mainImage.png'
 
 export const Login = () => {
-  const [form, setForm] = useState({
+  const [form] = useState({
     email: localStorage.getItem('email') || '',
     password: localStorage.getItem('password') || '',
   })
@@ -21,7 +21,7 @@ export const Login = () => {
   const [isPasswordExist, setIsPasswordExist] = useState(true)
   const navigate = useNavigate()
 
-  const [isValidForm, setIsValidForm] = useState({
+  const [isValidForm] = useState({
     email: false,
     password: false,
   })
@@ -158,6 +158,7 @@ export const Login = () => {
                 <ErrorMessage errorField={'This password does not match'} />
               )}
               <img
+              alt='eye'
                 src={passwordShow ? showEye : hideEye}
                 className="eyePassword"
                 onClick={() => setpasswordShow(!passwordShow)}

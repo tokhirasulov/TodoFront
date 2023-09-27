@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import error_icon from '../../shared/assets/error_icon.svg'
-import { FieldError } from 'react-hook-form'
 
 const ErrorWrapper = styled.div`
   display: flex;
@@ -23,7 +22,7 @@ interface ErrorProps {
 export const ErrorMessage = ({ errorField }: ErrorProps) => {
   return (
     <ErrorWrapper>
-      <img src={error_icon} className="error-icon" />
+      <img src={error_icon} className="error-icon" alt='error'/>
       <p className="error-message">{errorField}</p>
     </ErrorWrapper>
   )
