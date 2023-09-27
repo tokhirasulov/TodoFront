@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { SetStateAction, useEffect, useLayoutEffect, useState } from 'react'
 import * as Style from './styled'
 import { useNavigate } from 'react-router-dom'
 import { ButtonPrimary } from '../../components/ButtonPrimary'
@@ -79,31 +79,52 @@ export const Tasks = () => {
     }
   }
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        axios
-          .request(config('GET', 'tasks'))
-          .then((response) => {
-            setIsLoading(true)
-            if (response.status === 203) {
-              navigate('/login')
-            } else if (response.status === 200) {
-              setItems(response.data.data)
-            }
-          })
-          .catch((error) => {
-            if (error.response.status === 401) {
-              navigate('/login')
-            }
-          })
-        setIsLoading(false)
-      } catch (error) {
-        console.log(error)
-      }
+  const getData = async () => {
+    try {
+      axios
+        .request(config('GET', 'tasks'))
+        .then((response) => {
+          if (response.status === 203) {
+            navigate('/login')
+          } else if (response.status === 200) {
+            setItems(response.data.data)
+          }
+        })
+        .catch((error) => {
+          if (error.response?.status === 401) {
+            navigate('/login')
+          }
+        })
+    } catch (error) {
+      console.log(error)
     }
+  }
+  useEffect(() => {
     getData()
   }, [showUpdate, deletePop, editPop, logoutPop])
+
+  useLayoutEffect(() => {
+    try {
+      axios
+        .request(config('GET', 'tasks'))
+        .then((response) => {
+          setIsLoading(true)
+          if (response.status === 203) {
+            navigate('/login')
+          } else if (response.status === 200) {
+            setItems(response.data.data)
+          }
+        })
+        .catch((error) => {
+          if (error.response?.status === 401) {
+            navigate('/login')
+          }
+        })
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
 
   useEffect(() => {
     if (items.length > 0) {
