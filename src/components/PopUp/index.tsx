@@ -34,7 +34,6 @@ const PopUp = ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  console.log(taskId)
 
   const handleClick = () => {
     if (status === 'Delete') {

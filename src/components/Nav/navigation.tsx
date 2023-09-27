@@ -10,7 +10,6 @@ export const Nav = () => {
   const userName = localStorage.getItem('userName')
   const [show, setShow] = useState(false)
 
-  console.log(show)
 
   return (
     <Style.Wrap>

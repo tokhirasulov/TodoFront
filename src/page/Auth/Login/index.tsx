@@ -69,7 +69,6 @@ export const Login = () => {
         .request(config('POST', 'auth/login', data))
         .then((response) => {
           res(true)
-          console.log(response)
           if (response.status === 200) {
             localStorage.setItem('token', response.data.accessToken)
             localStorage.setItem('userId', response.data.userData._id)
@@ -91,7 +90,6 @@ export const Login = () => {
       axios
         .request(config('GET', 'auth/login'))
         .then((response) => {
-          console.log(response)
           if (response.status === 200) {
             navigate('/')
           }

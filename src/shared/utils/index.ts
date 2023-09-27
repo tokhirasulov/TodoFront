@@ -15,16 +15,17 @@ export const config = (method: string, endPoint: string, data?: {}) => {
 }
 
 export const hideConsoleLog = () => {
-  const debug = localStorage.getItem('debug');
-  if (debug === null) localStorage.setItem('debug', 'client');
+  const debug = localStorage.getItem('debug')
+  if (debug === null) localStorage.setItem('debug', 'client')
   else if (!(debug === 'dev' || debug === '*')) {
-    // console.log('Log berkitilgan');
-    console.log('%cImprove your efficiency', 'font-size: 30px; color: green; font-weight: bold');
-    console.log = () => null;
-    console.info = () => null;
+    console.log(
+      '%cImprove your efficiency',
+      'font-size: 30px; color: green; font-weight: bold'
+    )
+    console.log = () => null
+    console.info = () => null
   }
-};
-
+}
 
 const size = {
   mobileS: '320px',

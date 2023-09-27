@@ -71,7 +71,6 @@ export const Registration = () => {
       password: data.password,
     }
     sendData(form)
-    console.log('send')
   }
 
   useEffect(() => {
@@ -94,7 +93,7 @@ export const Registration = () => {
           .request(config('POST', 'auth/registration', data))
           .then((response) => {
             res(true)
-            console.log(response)
+
             if (response.status === 200) {
               localStorage.setItem('token', response.data.accessToken)
               const userId = response.data.userData._id
@@ -102,7 +101,6 @@ export const Registration = () => {
               localStorage.setItem('userId', userId)
               localStorage.setItem('userName', name)
               navigate('/')
-              console.log(response.data)
             } else if (response.status === 208) {
               setIsUserExist(true)
             }
@@ -111,7 +109,6 @@ export const Registration = () => {
       })
     }
   }
-  console.log(watch('email'))
 
   return (
     <Style.Container>
