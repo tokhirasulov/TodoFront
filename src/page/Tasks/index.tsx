@@ -138,8 +138,6 @@ export const Tasks = () => {
     dispatch(showCreate())
   }
 
-  console.log(isLoading)
-
   const backlog = items.filter((item: Item) => item.status === 'backlog')
   const in_progress = items.filter(
     (item: Item) => item.status === 'in_progress'

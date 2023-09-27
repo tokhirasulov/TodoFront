@@ -19,11 +19,10 @@ const router = createBrowserRouter([
   },
 ])
 
-useEffect(() => {
-  hideConsoleLog()
-}, [])
-
 function App() {
+  useEffect(() => {
+    hideConsoleLog()
+  }, [])
   return <RouterProvider router={router} />
 }
 
