@@ -32,8 +32,6 @@ export const hideConsoleLog = () => {
 const oneHourDiff = (deadLine: Date, now: Date) => {
   const difference = deadLine.getHours() - now.getHours()
   const differenceMin = deadLine.getMinutes() - now.getMinutes()
-  console.log(deadLine.getMinutes() + ' ' + 'deadLine minute')
-  console.log(now.getMinutes() + ' ' + 'minutes')
   if (difference === 1 && differenceMin === 0) {
     return true
   }

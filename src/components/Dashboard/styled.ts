@@ -41,6 +41,7 @@ export const StatusSection = styled.div`
     text-align: center;
     font-size: 26px;
     position: relative;
+    opacity: 0.5;
 
     & > .infoIcon {
       position: absolute;

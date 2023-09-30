@@ -14,18 +14,22 @@ export const useCheckEmpty = ({
   descSet,
 }: IProps) => {
   useEffect(() => {
-    if (desc?.trim().length === 0) {
-      descSet(true)
-    } else {
-      descSet(false)
+    if (desc?.length > 0) {
+      if (desc?.trim().length === 0) {
+        descSet(true)
+      } else {
+        descSet(false)
+      }
     }
   }, [desc])
 
   useEffect(() => {
-    if (headLine?.trim().length === 0) {
-      headLineSet(true)
-    } else if (headLine?.trim().length > 0) {
-      headLineSet(false)
+    if (headLine?.length > 0) {
+      if (headLine?.trim().length === 0) {
+        headLineSet(true)
+      } else if (headLine?.trim().length > 0) {
+        headLineSet(false)
+      }
     }
   }, [headLine])
 }
