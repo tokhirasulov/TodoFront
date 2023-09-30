@@ -3,7 +3,6 @@ import triangle from '../../shared/assets/drop.svg'
 import * as Style from './styled'
 import { Logout } from '../LogoutDrop'
 import { useState } from 'react'
-// @ts-ignore
 import OutsideClickHandler from 'react-outside-click-handler'
 
 export const Nav = () => {

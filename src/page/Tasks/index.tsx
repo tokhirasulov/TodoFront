@@ -19,7 +19,10 @@ import deleteIcon from '../../shared/assets/deleteBigger.svg'
 import logoutIcon from '../../shared/assets/logoutIcon.svg'
 import warningIcon from '../../shared/assets/warning.svg'
 import PopUp from '../../components/PopUp'
-import { NotificationPop } from '../../components/NotificationPop'
+import {
+  setTasks,
+  updateTaskStatus,
+} from '../../store/features/tasks/tasksSlice'
 
 export interface Item {
   _id: string
@@ -27,24 +30,26 @@ export interface Item {
   description: string
   date: string
   status: string
+  deadLine: string
 }
 
 export const Tasks = () => {
-  const [items, setItems] = useState<Item[]>([])
   const [isEmpty, setIsEmpty] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
+
   const dispatch = useDispatch()
   const modalShow = useSelector(({ taskPopUp }) => taskPopUp.isShown)
   const showUpdate = useSelector(({ updatePopUp }) => updatePopUp.updateTask)
   const deletePop = useSelector(({ popUp }) => popUp.deletePop)
   const editPop = useSelector(({ popUp }) => popUp.warningPop)
   const logoutPop = useSelector(({ popUp }) => popUp.logoutPop)
+  const tasks = useSelector(({ tasks }) => tasks.tasks)
 
   const navigate = useNavigate()
 
   const handleDragEnd = ({ draggableId, destination, source }: any) => {
-    const i = items.findIndex((item: Item) => item._id === draggableId)
+    const i = tasks.findIndex((item: Item) => item._id === draggableId)
 
     const status = destination?.droppableId
     if (!destination) return
@@ -54,7 +59,8 @@ export const Tasks = () => {
     )
       return
 
-    setItems((prev) => [...prev, (prev[i].status = status)])
+    dispatch(updateTaskStatus({ status, i }))
+
     updateTasks(status, draggableId)
   }
 
@@ -71,17 +77,16 @@ export const Tasks = () => {
       if (response.status === 203) {
         navigate('/login')
       } else if (response.status === 200) {
-        setItems(response.data)
+        dispatch(setTasks(response.data))
       }
-    } catch (error) {
-      // @ts-ignore
+    } catch (error: any) {
       if (error.response.status === 401) {
         navigate('/login')
       }
     }
   }
 
-  const getData = async () => {
+  const getUpdate = async () => {
     try {
       axios
         .request(config('GET', 'tasks'))
@@ -89,7 +94,7 @@ export const Tasks = () => {
           if (response.status === 203) {
             navigate('/login')
           } else if (response.status === 200) {
-            setItems(response.data.data)
+            dispatch(setTasks(response.data.data))
           }
         })
         .catch((error) => {
@@ -102,7 +107,7 @@ export const Tasks = () => {
     }
   }
   useEffect(() => {
-    getData()
+    getUpdate()
   }, [showUpdate, deletePop, editPop, logoutPop])
 
   useLayoutEffect(() => {
@@ -114,7 +119,9 @@ export const Tasks = () => {
           if (response.status === 203) {
             navigate('/login')
           } else if (response.status === 200) {
-            setItems(response.data.data)
+            console.log(response)
+
+            dispatch(setTasks(response.data.data))
           }
         })
         .catch((error) => {
@@ -130,22 +137,33 @@ export const Tasks = () => {
   }, [])
 
   useEffect(() => {
-    if (items.length > 0) {
+    if (tasks.length > 0) {
       setIsEmpty(false)
     } else {
       setIsEmpty(true)
     }
-  }, [items])
+  }, [tasks])
 
   const handleClick = () => {
     dispatch(showCreate())
   }
 
-  const backlog = items.filter((item: Item) => item.status === 'backlog')
-  const in_progress = items.filter(
+  const backlog = tasks?.filter((item: Item) => item.status === 'backlog')
+  const in_progress = tasks?.filter(
     (item: Item) => item.status === 'in_progress'
   )
-  const completed = items.filter((item: Item) => item.status === 'completed')
+  const completed = tasks?.filter((item: Item) => item.status === 'completed')
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('running')
+
+      notifyUser(tasks)
+    }, 50000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [tasks])
 
   return (
     <>
@@ -172,12 +190,8 @@ export const Tasks = () => {
       ) : (
         <>
           <Nav />
-          {/* <NotificationPop
-            showNotification={showNotification}
-            setShowNotification={setShowNotification}
-          /> */}
           <Style.Wrapper>
-            <CreateTask setItems={setItems} />
+            <CreateTask />
             <UpdateTask />
             {deletePop && (
               <PopUp

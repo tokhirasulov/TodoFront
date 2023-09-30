@@ -1,4 +1,6 @@
 import { configs } from '../../configs'
+import { useSelector } from 'react-redux'
+import { Item } from '../../page/Tasks'
 
 export const config = (method: string, endPoint: string, data?: {}) => {
   const axiosConfig = {
@@ -27,11 +29,49 @@ export const hideConsoleLog = () => {
   }
 }
 
-export const notifyUser = () => {
+const oneHourDiff = (deadLine: Date, now: Date) => {
+  const difference = deadLine.getHours() - now.getHours()
+  const differenceMin = deadLine.getMinutes() - now.getMinutes()
+  console.log(deadLine.getMinutes() + ' ' + 'deadLine minute')
+  console.log(now.getMinutes() + ' ' + 'minutes')
+  if (difference === 1 && differenceMin === 0) {
+    return true
+  }
+  return false
+}
+
+export const notifyUser = (tasks: Item[]) => {
   Notification.requestPermission().then((perm) => {
+    const time = new Date()
+    const today = time.toISOString().split('T')[0]
+
     if (perm === 'granted') {
-      new Notification('Example', {
-        body: 'Clicked',
+      tasks.map((task: Item) => {
+        const deadLine = new Date(task.date).toISOString().split('T')[0]
+        const d2 = new Date(task.date)
+        let date2Hour = Number(task.deadLine.split(':')[0])
+        let date2Minutes = Number(task.deadLine.split(':')[1])
+        d2.setHours(date2Hour)
+        d2.setMinutes(date2Minutes)
+        const oneHour = oneHourDiff(d2, time)
+
+        for (let i = 0; i < tasks.length; i++) {
+          const deadLine = new Date(tasks[i].date).toISOString().split('T')[0]
+          const d2 = new Date(tasks[i].date)
+          let date2Hour = Number(tasks[i].deadLine.split(':')[0])
+          let date2Minutes = Number(tasks[i].deadLine.split(':')[1])
+          d2.setHours(date2Hour)
+          d2.setMinutes(date2Minutes)
+
+          if (deadLine === today) {
+            const oneHour = oneHourDiff(d2, time)
+            if (oneHour) {
+              const notification = new Notification(task.name, {
+                body: task.description,
+              })
+            }
+          }
+        }
       })
     }
   })

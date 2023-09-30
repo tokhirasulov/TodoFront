@@ -5,6 +5,7 @@ import { Item } from '../../page/Tasks'
 import { MoreOptions } from '../MoreOptions'
 import { useState } from 'react'
 import infoIcon from '../../shared/assets/info-icon.png'
+import time_icon from '../../shared/assets/clock_icon.svg'
 
 interface IProps {
   status: Item[]
@@ -63,8 +64,18 @@ export const Dashboard = ({ status, title, dropId }: IProps) => {
                       </div>
                       <p className="description">{item.description}</p>
                       <Style.Estimation status={item.status}>
-                        <img src={calendar_icon} alt="calendar_icon" />
-                        <p>{item.date}</p>
+                        <div className="Date">
+                          <img src={calendar_icon} alt="calendar_icon" />
+                          <p>{item.date}</p>
+                        </div>
+                        <div className="Time">
+                          <img
+                            src={time_icon}
+                            alt="time_icon"
+                            className="time_icon"
+                          />
+                          <p>{item.deadLine}</p>
+                        </div>
                       </Style.Estimation>
                     </Style.Task>
                   )}

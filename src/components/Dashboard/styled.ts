@@ -154,35 +154,53 @@ export const Estimation = styled.div<EstimationProps>`
   ${(props) =>
     props.status === 'in_progress' &&
     css`
-      background-color: ${colors.primary};
+      .Time,
+      .Date {
+        background-color: ${colors.primary};
+      }
     `}
   ${(props) =>
     props.status === 'backlog' &&
     css`
-      background-color: #f59e0b;
+      .Time,
+      .Date {
+        background-color: #f59e0b;
+      }
     `}
     ${(props) =>
     props.status === 'completed' &&
     css`
-      background-color: #059669;
+      .Time,
+      .Date {
+        background-color: #059669;
+      }
     `}
-  margin-top: 14px;
-  border-radius: 4px;
-  color: ${colors.white};
-  font-size: 14px;
-  font-weight: 400;
-  display: flex;
-  padding: 4px 12px;
-  gap: 8px;
-  width: 45%;
-  min-width: 110px;
-  @media ${device.tablet} {
-    margin-top: 10px;
-    font-size: 12px;
-    min-width: 100px;
+
+    & > .Time {
+    & > .time_icon {
+      width: 14px;
+    }
   }
-  @media ${device.mobileL} {
-    margin-top: 4px;
-    font-size: 10px;
+  & > .Time,
+  & > .Date {
+    margin-top: 14px;
+    border-radius: 4px;
+    color: ${colors.white};
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    padding: 4px 12px;
+    gap: 8px;
+    width: 45%;
+    min-width: 110px;
+    @media ${device.tablet} {
+      margin-top: 10px;
+      font-size: 12px;
+      min-width: 100px;
+    }
+    @media ${device.mobileL} {
+      margin-top: 4px;
+      font-size: 10px;
+    }
   }
 `

@@ -1,3 +1,3 @@
 export const configs = {
-    baseUrl : process.env.REACT_APP_BASE_URL
-};
+  baseUrl: 'http://localhost:8000',
+}

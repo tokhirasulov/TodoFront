@@ -4,7 +4,13 @@ import { ButtonPrimary } from '../ButtonPrimary'
 import { useForm } from 'react-hook-form'
 import { colors } from '../../shared/colors'
 import { useEffect, useState } from 'react'
-import { DatePicker, Space, DatePickerProps } from 'antd'
+import {
+  DatePicker,
+  Space,
+  DatePickerProps,
+  TimePicker,
+  TimePickerProps,
+} from 'antd'
 import { RangePickerProps } from 'antd/es/date-picker'
 import axios from 'axios'
 import { hideUpdateTask } from '../../store/features/updateTaskModal/updateTaskSlice'
@@ -21,6 +27,7 @@ interface Inputs {
   status: string
   description: string
   estimation: string
+  deadLine: string
 }
 
 export const UpdateTask = () => {
@@ -28,6 +35,7 @@ export const UpdateTask = () => {
   const [isLimit, setIsLimit] = useState(false)
   const [data, setData] = useState<Item>()
   const [dateValue, setDateValue] = useState<Dayjs>()
+  const [timeValue, setTimeValue] = useState<Dayjs>()
   const showUpdate = useSelector(({ updatePopUp }) => updatePopUp.updateTask)
   const navigate = useNavigate()
   const taskId = useSelector(({ taskId }) => taskId.id)
@@ -82,8 +90,10 @@ export const UpdateTask = () => {
     if (data) {
       if (!showUpdate) {
         setDateValue(undefined)
+        setTimeValue(undefined)
       } else {
         setDateValue(dayjs(data?.date))
+        setTimeValue(dayjs(data?.deadLine, ['HH:mm:ss'], true))
       }
     }
   }, [data])
@@ -93,6 +103,12 @@ export const UpdateTask = () => {
     setValue('estimation', dateString)
     if (!dateString) {
       setValue('estimation', new Date().toISOString().split('T')[0])
+    }
+  }
+  const onChangeTime: TimePickerProps['onChange'] = (time, timeString) => {
+    setValue('deadLine', timeString)
+    if (!timeString) {
+      setValue('deadLine', dayjs())
     }
   }
   const handleClick = () => {
@@ -133,8 +149,7 @@ export const UpdateTask = () => {
         <Style.ModalWrapper>
           <Style.Modal>
             <form
-              // @ts-ignore
-              onSubmit={handleSubmit((info) => sendData(info))}
+              onSubmit={handleSubmit((info: any) => sendData(info))}
               noValidate
               className="create-form"
             >
@@ -191,16 +206,25 @@ export const UpdateTask = () => {
               <Style.InputWrapper>
                 <label htmlFor="estimation">Add estimation</label>
                 <Space direction="vertical" style={{ width: '100%' }}>
-                  {dateValue && (
-                    <DatePicker
-                      style={{ width: '100%' }}
-                      id="estimation"
-                      onChange={onChange}
-                      className="create-input"
-                      defaultValue={dateValue}
-                      disabledDate={disabledDate}
-                    />
-                  )}
+                  <div className="Date">
+                    {dateValue && (
+                      <DatePicker
+                        style={{ width: '48%' }}
+                        id="estimation"
+                        onChange={onChange}
+                        className="create-input"
+                        disabledDate={disabledDate}
+                        defaultValue={dateValue}
+                      />
+                    )}
+                    {timeValue && (
+                      <TimePicker
+                        style={{ width: '48%' }}
+                        onChange={onChangeTime}
+                        defaultValue={timeValue}
+                      />
+                    )}
+                  </div>
                 </Space>
               </Style.InputWrapper>
               <div className="buttonWrapper">

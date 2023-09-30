@@ -40,6 +40,11 @@ export const InputWrapper = styled.div`
   flex-direction: column;
   gap: 7px;
 
+  & > div > div > .Date {
+    display: flex;
+    justify-content: space-between;
+  }
+
   & > .create-input {
     border: 1px solid #cbd5e1;
     padding: 14px 16px;

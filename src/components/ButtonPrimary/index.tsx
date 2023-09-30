@@ -21,7 +21,6 @@ export const ButtonPrimary = ({
   onClick,
   color,
 }: ButtonProps) => {
-  console.log(disable)
   return (
     <Style.ButtonPrimary
       type={type}

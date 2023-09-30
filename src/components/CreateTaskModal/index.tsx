@@ -4,28 +4,32 @@ import { ButtonPrimary } from '../ButtonPrimary'
 import { useForm } from 'react-hook-form'
 import { colors } from '../../shared/colors'
 import { useEffect, useState } from 'react'
-import { DatePicker, Space, DatePickerProps } from 'antd'
 import { RangePickerProps } from 'antd/es/date-picker'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideCreate } from '../../store/features/createTaskModal/createTaskSlice'
 import { useNavigate } from 'react-router-dom'
 import { config } from '../../shared/utils'
+import { setTasks } from '../../store/features/tasks/tasksSlice'
 import dayjs from 'dayjs'
 import useCheckEmpty from '../../shared/hooks/useCheckEmpty'
+import {
+  DatePickerProps,
+  DatePicker,
+  Space,
+  TimePicker,
+  TimePickerProps,
+} from 'antd'
 
 interface Inputs {
   headLine: string
   description: string
   estimation?: string
   status: 'backlog'
+  deadLine: string
 }
 
-interface TaskProps {
-  setItems: Function
-}
-
-export const CreateTask = ({ setItems }: TaskProps) => {
+export const CreateTask = () => {
   const [charNum, setCharNum] = useState(0)
   const [isLimit, setIsLimit] = useState(false)
   const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -33,6 +37,8 @@ export const CreateTask = ({ setItems }: TaskProps) => {
   const [minLimitDesc, setMinLimitDesc] = useState(false)
   const dispatch = useDispatch()
   const show = useSelector(({ taskPopUp }) => taskPopUp.isShown)
+  const tasks = useSelector(({ tasks }) => tasks.tasks)
+
   const navigate = useNavigate()
   //  React Hook Form
   const {
@@ -57,6 +63,12 @@ export const CreateTask = ({ setItems }: TaskProps) => {
       value: 'backlog',
     })
   }
+
+  const onChangeTime: TimePickerProps['onChange'] = (time, timeString) => {
+    register('deadLine', {
+      value: timeString,
+    })
+  }
   const closePop = () => {
     dispatch(hideCreate())
     reset({
@@ -73,13 +85,14 @@ export const CreateTask = ({ setItems }: TaskProps) => {
         const form = new FormData()
         form.append('headLine', data.headLine)
         form.append('description', data.description)
+        form.append('deadLine', data.deadLine)
         if (data.estimation) form.append('estimation', data.estimation)
         const d = { data, userId: localStorage.getItem('userId') }
         axios
           .request(config('POST', 'tasks', d))
           .then((response) => {
             if (response.status === 200) {
-              setItems(response.data)
+              dispatch(setTasks(response.data))
               dispatch(hideCreate())
               reset({
                 headLine: '',
@@ -98,7 +111,6 @@ export const CreateTask = ({ setItems }: TaskProps) => {
       })
     }
   }
-  console.log(buttonDisabled)
 
   useEffect(() => {
     setCharNum(description?.length)
@@ -194,13 +206,21 @@ export const CreateTask = ({ setItems }: TaskProps) => {
               <Style.InputWrapper>
                 <label htmlFor="estimation">Add estimation</label>
                 <Space direction="vertical" style={{ width: '100%' }}>
-                  <DatePicker
-                    style={{ width: '100%' }}
-                    id="estimation"
-                    onChange={onChange}
-                    className="create-input"
-                    disabledDate={disabledDate}
-                  />
+                  <div className="Date">
+                    <DatePicker
+                      style={{ width: '48%' }}
+                      id="estimation"
+                      onChange={onChange}
+                      className="create-input"
+                      disabledDate={disabledDate}
+                      defaultValue={dayjs()}
+                    />
+                    <TimePicker
+                      style={{ width: '48%' }}
+                      onChange={onChangeTime}
+                      defaultValue={dayjs()}
+                    />
+                  </div>
                 </Space>
               </Style.InputWrapper>
               <div className="buttonWrapper">
