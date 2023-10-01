@@ -182,7 +182,8 @@ export const Registration = () => {
                   required: 'Create your password',
                   pattern: {
                     value: PWD_REGEX,
-                    message: 'Your password is not strong enough',
+                    message:
+                      'Your password is not strong enough. Example:!123456Ab ',
                   },
                 })}
                 id="password"
