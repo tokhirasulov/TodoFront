@@ -138,7 +138,7 @@ export const Login = () => {
             )}
           </Style.InputWrapper>
           <Style.InputWrapper>
-            <label htmlFor="password">Create a password</label>
+            <label htmlFor="password">Enter a password</label>
             <div className="passwordWrapper">
               <input
                 className="reg-input"
@@ -156,7 +156,7 @@ export const Login = () => {
                 <ErrorMessage errorField={'This password does not match'} />
               )}
               <img
-              alt='eye'
+                alt="eye"
                 src={passwordShow ? showEye : hideEye}
                 className="eyePassword"
                 onClick={() => setpasswordShow(!passwordShow)}
