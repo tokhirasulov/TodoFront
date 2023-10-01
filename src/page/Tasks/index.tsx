@@ -36,7 +36,6 @@ export interface Item {
 export const Tasks = () => {
   const [isEmpty, setIsEmpty] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [showNotification, setShowNotification] = useState(false)
 
   const dispatch = useDispatch()
   const modalShow = useSelector(({ taskPopUp }) => taskPopUp.isShown)
@@ -133,7 +132,6 @@ export const Tasks = () => {
     } catch (error) {
       console.log(error)
     }
-    setShowNotification(true)
   }, [])
 
   useEffect(() => {
@@ -156,8 +154,6 @@ export const Tasks = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log('running')
-
       notifyUser(tasks)
     }, 50000)
     return () => {
