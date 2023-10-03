@@ -74,10 +74,12 @@ export const Registration = () => {
   }
 
   useEffect(() => {
-    if (fullName?.trim().length === 0) {
-      setMinFullName(true)
-    } else if (fullName?.trim().length > 0) {
-      setMinFullName(false)
+    if (fullName?.length > 1) {
+      if (fullName?.trim().length === 0) {
+        setMinFullName(true)
+      } else if (fullName?.trim().length > 0) {
+        setMinFullName(false)
+      }
     }
   }, [fullName])
 
